@@ -1,7 +1,7 @@
 import type { Frame, FrameInternal } from './Frame';
 import type { FrameProcessor } from './CameraProps';
-import { Camera } from './Camera';
 import { CameraRuntimeError } from './CameraError';
+import { installFrameProcessorBindings } from './NativeCameraModule'
 
 // only import typescript types
 import type TWorklets from 'react-native-worklets-core';
@@ -43,7 +43,7 @@ try {
   const { Worklets } = require('react-native-worklets-core') as typeof TWorklets;
 
   // Install native Frame Processor Runtime Manager
-  Camera.installFrameProcessorBindings();
+  installFrameProcessorBindings();
   // @ts-expect-error global is untyped, it's a C++ host-object
   if (global.VisionCameraProxy == null) {
     throw new CameraRuntimeError(

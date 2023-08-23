@@ -1,5 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import { CameraRuntimeError } from './CameraError';
+import { assertJSIAvailable } from './JSIHelper';
 
 const supportedPlatforms = ['ios', 'android', 'macos'];
 
@@ -39,4 +40,11 @@ if (CameraModule == null) {
 
   message += '\n* Make sure you rebuilt the app.';
   throw new CameraRuntimeError('system/camera-module-not-found', message);
+}
+
+export const installFrameProcessorBindings = (): void => {
+    assertJSIAvailable();
+    const result = CameraModule.installFrameProcessorBindings() as unknown;
+    if (result !== true)
+        throw new CameraRuntimeError('system/frame-processors-unavailable', 'Failed to install Frame Processor JSI bindings!');
 }
